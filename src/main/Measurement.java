@@ -10,7 +10,10 @@ public class Measurement {
   }
 
   public Measurement convertTo(Unit anotherUnit) {
-    return new Measurement(unit.toBaseUnit(amount) / anotherUnit.toBaseUnit(1), anotherUnit);
+    if (!unit.isCompatibleWith(anotherUnit)) {
+      throw new IncompatibleUnitsException();
+    }
+    return new Measurement(anotherUnit.fromBaseUnit(unit.toBaseUnit(amount)), anotherUnit);
   }
 
   @Override

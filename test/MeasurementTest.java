@@ -1,3 +1,4 @@
+import main.IncompatibleUnitsException;
 import main.Measurement;
 import main.Unit;
 import org.junit.Test;
@@ -40,4 +41,39 @@ public class MeasurementTest {
 
     assertEquals(new Measurement(2, Unit.CM), convertedMeasurement);
   }
+
+  @Test
+  public void shouldConvertCelsiusToKelvin() {
+    Measurement measurement = new Measurement(273, Unit.CELSIUS);
+
+    Measurement convertedMeasurement = measurement.convertTo(Unit.KELVIN);
+
+    assertEquals(new Measurement(546, Unit.KELVIN), convertedMeasurement);
+  }
+
+  @Test
+  public void shouldConvertFahrenheitToKelvin() {
+    Measurement measurement = new Measurement(-40, Unit.FAHRENHEIT);
+
+    Measurement convertedMeasurement = measurement.convertTo(Unit.KELVIN);
+
+    assertEquals(new Measurement(233, Unit.KELVIN), convertedMeasurement);
+  }
+
+  @Test
+  public void shouldConvertFahrenheitToCelsius() {
+    Measurement measurement = new Measurement(-40, Unit.FAHRENHEIT);
+
+    Measurement convertedMeasurement = measurement.convertTo(Unit.CELSIUS);
+
+    assertEquals(new Measurement(-40, Unit.CELSIUS), convertedMeasurement);
+  }
+
+  @Test(expected = IncompatibleUnitsException.class)
+  public void shouldHandleIncompatibleUnitTypes() {
+    Measurement measurement = new Measurement(2, Unit.CM);
+
+    measurement.convertTo(Unit.CELSIUS);
+  }
+
 }
